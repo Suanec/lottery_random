@@ -1,0 +1,13 @@
+{
+    "levels":{
+        "level0": { "lottery_all_count":4, "lottery_max_times": 4, "lottery_count":1},
+        "level1": { "lottery_all_count":6, "lottery_max_times": 1, "lottery_count":6},
+        "level2": { "lottery_all_count":8, "lottery_max_times": 2, "lottery_count":4},
+        "level3": { "lottery_all_count":10, "lottery_max_times": 2, "lottery_count":5},
+        "level4": { "lottery_all_count":20, "lottery_max_times": 2, "lottery_count":10},
+        "level5": { "lottery_all_count":40, "lottery_max_times": 2, "lottery_count":20},
+        "level6": { "lottery_all_count":60, "lottery_max_times": 3, "lottery_count":20},
+        "level7": { "lottery_all_count":80, "lottery_max_times": 4, "lottery_count":20},
+        "level8": { "lottery_all_count":100, "lottery_max_times": 5, "lottery_count":20},
+    }
+}
