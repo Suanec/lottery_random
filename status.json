@@ -1,13 +1,15 @@
 {
     "status":{
-        "level0": { "lottery_cur_times": 0},
-        "level1": { "lottery_cur_times": 0},
-        "level2": { "lottery_cur_times": 0},
-        "level3": { "lottery_cur_times": 0},
-        "level4": { "lottery_cur_times": 0},
-        "level5": { "lottery_cur_times": 0},
-        "level6": { "lottery_cur_times": 0},
-        "level7": { "lottery_cur_times": 0},
-        "level8": { "lottery_cur_times": 0}
+        "level0": { "lottery_cur_times": 0, "lottery_winner_list" : []},
+        "level1": { "lottery_cur_times": 0, "lottery_winner_list" : []},
+        "level2": { "lottery_cur_times": 0, "lottery_winner_list" : []},
+        "level3": { "lottery_cur_times": 0, "lottery_winner_list" : []},
+        "level4": { "lottery_cur_times": 0, "lottery_winner_list" : []},
+        "level5": { "lottery_cur_times": 0, "lottery_winner_list" : []},
+        "level6": { "lottery_cur_times": 0, "lottery_winner_list" : []},
+        "level7": { "lottery_cur_times": 0, "lottery_winner_list" : []},
+        "level8": { "lottery_cur_times": 0, "lottery_winner_list" : []}
+    },
+    "winners":{
     }
 }
