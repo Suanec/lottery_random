@@ -10,6 +10,11 @@ from lottery_utils import logger,logger_fmt_component
 class LotteryRandom(object):
     def __init__(self, _candidates = {}, _pre_winner = {}, _seed = None,
                  _rule_config_file = "rule.json", _status_config_file = "status.json"):
+        self.reinit(_candidates=_candidates, _pre_winner=_pre_winner, _seed=_seed,
+                    _rule_config_file=_rule_config_file, _status_config_file=_status_config_file)
+
+    def reinit(self, _candidates = {}, _pre_winner = {}, _seed = None,
+                 _rule_config_file = "rule.json", _status_config_file = "status.json"):
         self.candidates = _candidates
         self.candidates_size = len(self.candidates)
         self.pre_winner = _pre_winner
@@ -88,8 +93,8 @@ class LotteryRandom(object):
             self.rander_perm_result = [x for x in self.random_candidates if (x not in self.lottery_winner_id)]
             self.rander_perm_result = self.rander_perm_result[:self.level_count]
             assert len(self.rander_perm_result) == self.level_count
-            self._stage_winners()
-
+            [ self.lottery_winner.update({x: self.level_key}) for x in self.rander_perm_result ]
+            lottery_utils.logger.info(self.level_key + "\t|\t" + ",".join(self.rander_perm_result))
             return self.rander_perm_result
         else:
             lottery_utils.logger.error(self.level_key + "has been finished.")
