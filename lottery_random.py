@@ -95,6 +95,7 @@ class LotteryRandom(object):
             assert len(self.rander_perm_result) == self.level_count
             [ self.lottery_winner.update({x: self.level_key}) for x in self.rander_perm_result ]
             lottery_utils.logger.info(self.level_key + "\t|\t" + ",".join(self.rander_perm_result))
+            self._stage_winners()
             return self.rander_perm_result
         else:
             lottery_utils.logger.error(self.level_key + "has been finished.")
@@ -104,14 +105,14 @@ class LotteryRandom(object):
 if __name__ == '__main__':
     candidate_list = open("./input.uid", "r").read().split("\n")
     pre_winner = set()
-    lr81 = LotteryRandom(candidate_list, pre_winner, 1096)
+    # lr81 = LotteryRandom(candidate_list, pre_winner, 1096)
     # lr81.stage_cleansing()
     lr81 = LotteryRandom(candidate_list, pre_winner, 1096)
     lr81_winner = lr81.rander_perm()
     print(lr81_winner)
-    pre_winner.update(set(lr81_winner))
-    lr82 = LotteryRandom(candidate_list, pre_winner, 1096)
-    lr82_winner = lr82.rander_perm()
-    print(lr82_winner)
-    pre_winner.update(set(lr82_winner))
-    print(pre_winner)
+    # pre_winner.update(set(lr81_winner))
+    # lr82 = LotteryRandom(candidate_list, pre_winner, 1096)
+    # lr82_winner = lr82.rander_perm()
+    # print(lr82_winner)
+    # pre_winner.update(set(lr82_winner))
+    # print(pre_winner)

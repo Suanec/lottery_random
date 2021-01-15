@@ -3,6 +3,7 @@
 __author__ = 'lynne'
 # Created by lynne on 2021/1/13.
 
+import lottery_utils
 import time
 import argparse
 from lottery_random import LotteryRandom
@@ -33,8 +34,14 @@ if __name__ == '__main__':
                         help="random seed.")
     parser.add_argument("-l", '--level', dest='level', type=int, default=8,
                         help="lottery level.")
-    args = parser.parse_args()
 
-    le = LotteryEntrance(_seed=args.seed, _input_uid_file=args.input_uid_file, _restart_flag=False)
+    parser.add_argument("-c", "--stage_cleansing", action = "store_true", default=False, dest='stage_cleansing',
+                        help='stage cleansing. ')
+    sys_argv = lottery_utils.sys.argv
+    if(len(sys_argv) < 2):
+        sys_argv.append("-h")
+    args = parser.parse_args(sys_argv)
+
+    le = LotteryEntrance(_seed=args.seed, _input_uid_file=args.input_uid_file, _restart_flag=args.stage_cleansing)
     print(le.rand_perm(args.level))
 
