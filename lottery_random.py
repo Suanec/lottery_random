@@ -18,11 +18,21 @@ class LotteryRandom(object):
         self.rule_config = lottery_utils.json.load(open(_rule_config_file, "r"))
         self.status_config = lottery_utils.json.load(open(_status_config_file, "r"))
         self.status_stage_file = _status_config_file + ".lottery_random.stage"
+        self._init_stage_file()
         self.KEY_LEVEL = "level"
+        self.KEY_STATUS = "status"
         self.KEY_LOTTERY_ALL_COUNT = "lottery_all_count"
         self.KEY_LOTTERY_MAX_TIMES = "lottery_max_times"
         self.KEY_LOTTERY_COUNT = "lottery_count"
         self.KEY_LOTTERY_CUR_TIMES = "lottery_cur_times"
+        self.KEY_LOTTERY_WINNER_LIST = "lottery_winner_list"
+        self.KEY_WINNERS = "winners"
+
+    def _init_stage_file(self):
+        try:
+            lottery_utils.json.load(open(self.status_stage_file, "r"))
+        except Exception as e:
+            lottery_utils.json.dump(self.status_config, open(self.status_stage_file, "w"))
 
 
     def _rander_perm(self):
@@ -50,14 +60,53 @@ class LotteryRandom(object):
         return self.level_rules
 
     def _read_status(self):
-        self.status_stage = self.status_config.get("status")
+        self._read_rules()
+        self.status_stage = self.status_config.get(self.KEY_STATUS)
+        self.stage_config = lottery_utils.json.load(open(self.status_stage_file, "r"))
+        self.lottery_winner = self.stage_config.get(self.KEY_WINNERS)
+        self.lottery_winner_id = set(self.lottery_winner.keys())
 
+    def _stage_winners(self):
+        self.stage_config[self.KEY_STATUS][self.level_key][self.KEY_LOTTERY_CUR_TIMES] = self.level_cur_times + 1
+        for winner_id in self.rander_perm_result:
+            self.lottery_winner[winner_id] = self.level_key
+        self.lottery_winner_str = lottery_utils.json.dump(self.stage_config, open(self.status_stage_file, "w"))
 
-    def rander_perm(self):
+    def stage_cleansing(self):
+        lottery_utils.os.remove(self.status_stage_file)
+
+    def rander_perm(self, _level = 8):
         self.random_candidates = self._rander_perm()
+        self._read_status()
+        self.level_key = self.KEY_LEVEL + str(_level)
+        self.level_rule = self.level_rules.get(self.level_key)
+
+        self.level_count = self.level_rule.get(self.KEY_LOTTERY_COUNT)
+        self.level_max_times = self.level_rule.get(self.KEY_LOTTERY_MAX_TIMES)
+        self.level_cur_times = self.stage_config.get(self.KEY_STATUS).get(self.level_key).get(self.KEY_LOTTERY_CUR_TIMES)
+        if(self.level_cur_times < self.level_max_times):
+            self.rander_perm_result = [x for x in self.random_candidates if (x not in self.lottery_winner_id)]
+            self.rander_perm_result = self.rander_perm_result[:self.level_count]
+            assert len(self.rander_perm_result) == self.level_count
+            self._stage_winners()
+
+            return self.rander_perm_result
+        else:
+            lottery_utils.logger.error(self.level_key + "has been finished.")
+            return []
+
 
 if __name__ == '__main__':
     candidate_list = open("./input.uid", "r").read().split("\n")
-    pre_winner = {}
-    lr = LotteryRandom(candidate_list, pre_winner, 1096)
-    print(lr._rander_perm())
+    pre_winner = set()
+    lr81 = LotteryRandom(candidate_list, pre_winner, 1096)
+    # lr81.stage_cleansing()
+    lr81 = LotteryRandom(candidate_list, pre_winner, 1096)
+    lr81_winner = lr81.rander_perm()
+    print(lr81_winner)
+    pre_winner.update(set(lr81_winner))
+    lr82 = LotteryRandom(candidate_list, pre_winner, 1096)
+    lr82_winner = lr82.rander_perm()
+    print(lr82_winner)
+    pre_winner.update(set(lr82_winner))
+    print(pre_winner)
