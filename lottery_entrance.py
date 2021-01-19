@@ -64,7 +64,6 @@ if __name__ == '__main__':
         seed_length -= 1
         if(seed_length > 0):
             default_seed *= 10
-        print(seed_length)
     default_seed = long(default_seed)
     lottery_utils.logger.info(lottery_utils.logger_fmt_component(["default_seed", str(default_seed)]))
 
