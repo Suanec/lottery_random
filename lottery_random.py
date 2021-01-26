@@ -19,7 +19,7 @@ class LotteryRandom(object):
         self.candidates_size = len(self.candidates)
         self.pre_winner = _pre_winner
         logger.info(logger_fmt_component(["_seed", str(_seed)]))
-        self.rander = Random(_seed) if(_seed) else Random
+        self.rander = Random(long(_seed)) if(_seed) else Random
         self.rule_config = lottery_utils.json.load(open(_rule_config_file, "r"))
         self.status_config = lottery_utils.json.load(open(_status_config_file, "r"))
         self.status_stage_file = _status_config_file + ".lottery_random.stage"
@@ -75,6 +75,7 @@ class LotteryRandom(object):
         self.stage_config[self.KEY_STATUS][self.level_key][self.KEY_LOTTERY_CUR_TIMES] = self.level_cur_times + 1
         for winner_id in self.rander_perm_result:
             self.lottery_winner[winner_id] = self.level_key
+            self.stage_config[self.KEY_STATUS][self.level_key][self.KEY_LOTTERY_WINNER_LIST].append(winner_id)
         self.lottery_winner_str = lottery_utils.json.dump(self.stage_config, open(self.status_stage_file, "w"))
 
     def stage_cleansing(self):
